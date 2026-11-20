@@ -84,16 +84,20 @@ const PopupDrawer: React.FC<PopupDrawerProps> = ({
             <DrawerContent height="100vh" padding='40px' position="relative">
                 <DrawerCloseButton />
                 <DrawerBody overflowY='auto' maxWidth="600px" margin="0 auto" width="100%">
-                    <Box style={imageBox}>
-                        <Image
-                            style={{width: '100%', height: '100%', borderRadius: '5px', objectFit: 'contain'}}
-                            src={currentContent.modalImage}
-                        />
-                    </Box>
-                    <Divider marginTop={3} marginBottom={3}/>
+                    {currentContent.modalImage && (
+                        <>
+                            <Box style={imageBox}>
+                                <Image
+                                    style={{width: '100%', height: '100%', borderRadius: '5px', objectFit: 'contain'}}
+                                    src={currentContent.modalImage}
+                                />
+                            </Box>
+                            <Divider marginTop={3} marginBottom={3}/>
+                        </>
+                    )}
                     <Box>
                         <Heading style={titleStyle} fontWeight={600}>{currentContent.modalTitle}</Heading>
-                        <Text style={nameStyle} fontWeight={600}>{`${currentContent.name} ${currentContent.grade}`}</Text>
+                        <Text style={nameStyle} fontWeight={600}>{`${currentContent.booth}  ${currentContent.name} ${currentContent.grade}`.trim()}</Text>
                         <Text style={textStyle}
                           sx={{ whiteSpace: 'pre-wrap' }}
                         >
@@ -101,7 +105,7 @@ const PopupDrawer: React.FC<PopupDrawerProps> = ({
                         </Text>
                         {currentContent.contentUrl && (
                             <>
-                                <Text style={linkTitleStyle}>U:…¹êó¯:</Text>
+                                <Text style={linkTitleStyle}>ãƒªãƒ³ã‚¯</Text>
                                 <Link
                                     href={currentContent.contentUrl}
                                     isExternal

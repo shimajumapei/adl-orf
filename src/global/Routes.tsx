@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Home from '../page/Home';
-import Lounge from '../page/Lounge';
-import Atelier1 from '../page/Atelier1';
-import Atelier2 from '../page/Atelier2';
+import FloorPage from '../page/Floor';
 import { PopupContent } from '../notion/types';
 
 interface appRoutesProps {
@@ -11,34 +9,41 @@ interface appRoutesProps {
     data: PopupContent[];
 }
 
+export const floorPath = (floor: string) => `/adl-orf/${floor.toLowerCase()}`;
+
 const AppRoutes: React.FC<appRoutesProps> = ({headerHeight, data}) => {
     const [currentModal, setCurrentModal] = useState<number>(0);
     const navigate = useNavigate()
-    const handleNextModal = () => {
-        currentModal === 19 ? setCurrentModal(1) : setCurrentModal(currentModal + 1)
-    }
-    const handlePrevModal = () => {
-        currentModal === 1 ? setCurrentModal(19) : setCurrentModal(currentModal - 1)
+    // 番号順（booth）で前後に移動する
+    const ordered = [...data].sort((a, b) => a.booth.localeCompare(b.booth));
+    const step = (delta: number) => {
+        if (ordered.length === 0) return;
+        const i = ordered.findIndex(c => c.id === currentModal);
+        const next = ordered[(i + delta + ordered.length) % ordered.length];
+        setCurrentModal(next.id);
     }
 
     useEffect(() => {
-        if (currentModal <= 10 && currentModal > 0) {
-            navigate('/adl-orf/lounge', { state:{shouldFade: true}});
-        } else if (currentModal > 10 && currentModal <= 14) {
-            navigate('/adl-orf/atelier2', { state:{shouldFade: true}});
-        } else if(currentModal > 14) {
-            navigate('/adl-orf/atelier1', { state:{shouldFade: true}})
+        const current = data.find(c => c.id === currentModal);
+        if (current) {
+            navigate(floorPath(current.floor), { state: { shouldFade: true } });
         }
-    }, [currentModal, navigate]);
+    }, [currentModal, data, navigate]);
+
+    const floorProps = {
+        currentModal, setCurrentModal,
+        handleNextModal: () => step(1),
+        handlePrevModal: () => step(-1),
+        headerHeight, data,
+    };
 
     return(
         <Routes>
-            <Route path='/adl-orf' element={<Home headerHeight={headerHeight}/>} />
-            <Route path='/adl-orf/lounge' element={<Lounge {...{currentModal, setCurrentModal, handleNextModal, handlePrevModal, headerHeight, data}} />} />
-            <Route path='/adl-orf/atelier1' element={<Atelier1 {...{currentModal, setCurrentModal, handleNextModal, handlePrevModal, headerHeight, data}} />} />
-            <Route path='/adl-orf/atelier2' element={<Atelier2 {...{currentModal, setCurrentModal, handleNextModal, handlePrevModal, headerHeight, data}} />} />
+            <Route path='/adl-orf' element={<Home headerHeight={headerHeight} data={data} />} />
+            <Route path='/adl-orf/1f' element={<FloorPage floor="1F" {...floorProps} />} />
+            <Route path='/adl-orf/2f' element={<FloorPage floor="2F" {...floorProps} />} />
         </Routes>
-    );
+    )
 }
 
 export default AppRoutes

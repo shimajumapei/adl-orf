@@ -7,9 +7,8 @@ const PageTabs: React.FC = () => {
   const location = useLocation();
 
   const tabs = [
-    { label: "Lounge", path: "/adl-orf/lounge" },
-    { label: "Atelier 1", path: "/adl-orf/atelier1" },
-    { label: "Atelier 2", path: "/adl-orf/atelier2" },
+    { label: "1F", path: "/adl-orf/1f" },
+    { label: "2F", path: "/adl-orf/2f" },
   ];
 
   // Determine active tab index based on current path

@@ -1,130 +1,65 @@
-import React, { useEffect, useState, useRef } from'react';
-import {Box, Image, Fade, Heading } from '@chakra-ui/react'
+import React from 'react';
+import { Box, Image, Fade, Heading, Button } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
 import Floor1 from 'image/1f.png'
 import Floor2 from 'image/2f.png'
-import NavigationButton from '../../global/components/NavigationButton';
-import ScrollDownButton from '../../global/components/ScrollDownButton';
-import { useNavigate } from 'react-router-dom';
-import ADLLogo from 'image/ADLLogo.png'
-import ErikaLabLogo from 'image/ErikaLabLogo.png'
-
+import { Floor, PopupContent } from '../../notion/types';
+import { floorPath } from '../../global/Routes';
 
 interface homeProp {
     headerHeight: number
+    data: PopupContent[]
 }
-const Home: React.FC<homeProp> = ({headerHeight}) => {
+
+// 各階の全体図（src/image/1f.png / 2f.png）上で、展示エリアのある位置（%）
+const EXHIBIT_AREA: Record<Floor, { x: number; y: number }> = {
+    '1F': { x: 23.5, y: 62.5 },
+    '2F': { x: 30.0, y: 26.5 },
+}
+
+const FloorOverview: React.FC<{ floor: Floor; image: string; count: number }> = ({ floor, image, count }) => {
     const navigate = useNavigate();
+    const area = EXHIBIT_AREA[floor];
+    return (
+        <Box width="100%" maxWidth="1000px" paddingX={2} paddingY={4}>
+            <Heading fontSize="xl" fontWeight="600" marginBottom={2}>{floor}</Heading>
+            <Box position="relative" width="100%">
+                <Image src={image} width="100%" opacity={0.7} alt={`${floor} 平面図`} />
+                <Button
+                    onClick={() => navigate(floorPath(floor), { state: { shouldFade: true } })}
+                    position="absolute"
+                    top={`${area.y}%`}
+                    left={`${area.x}%`}
+                    transform="translate(-50%, -50%)"
+                    size="sm"
+                    colorScheme="blackAlpha"
+                    backgroundColor="blackAlpha.800"
+                    color="white"
+                    borderRadius="full"
+                    boxShadow="md"
+                >
+                    {floor}の展示を見る（{count}）
+                </Button>
+            </Box>
+        </Box>
+    )
+}
 
-    const viewportSize = {
-        width: window.innerWidth,
-        height: window.innerHeight,
-    }
-    const [image1Size, setImage1Size] = useState({
-        width: 0,
-        height: 0
-    })
-    const [image1Position, setImage1Position] = useState({
-        top: 0,
-        left: 0
-    })
-    const [image2Size, setImage2Size] = useState({
-        width: 0,
-        height: 0
-    })
-    const [image2Position, setImage2Position] = useState({
-        top: 0,
-        left: 0
-    })
-    const floor1Ref = useRef<HTMLDivElement>(null)
-    const floor2Ref = useRef<HTMLDivElement>(null)
-    const contentHeight = viewportSize.height - headerHeight
-    const contentBox = {
-        position: 'absolute',
-        top: `${headerHeight}px`,
-        width: '100%',
-        height: contentHeight * 2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        display: 'flex',
-        flexDirection: 'column'
-    }
-    const floorBox = {
-        width: '100%',
-        height: contentHeight,
-        overflow: 'hidden',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column'
-    }
-    const imageStyle = {
-        width: '100%',
-        height: contentHeight,
-        transform: 'scale(1)',
-        opacity: 0.7,
-    }
-    useEffect(() => {
-        if (floor1Ref.current) {
-          const rect = floor1Ref.current.getBoundingClientRect();
-          setImage1Position({ top: rect.top, left: rect.left });
-          setImage1Size({ width: rect.width, height: rect.height })
-        }
-        
-    }, [headerHeight]);
-    useEffect(() => {
-        if (floor2Ref.current) {
-          const rect = floor2Ref.current.getBoundingClientRect();
-          setImage2Position({ top: rect.top, left: rect.left });
-          setImage2Size({ width: rect.width, height: rect.height });
-        }
-    }, [headerHeight]);
-
-    const handleOnClickLounge = () => {
-        navigate('/adl-orf/lounge');
-    };
-
-    const handleOnClickAtelier1 = () => {
-        navigate('/adl-orf/atelier1');
-    }
-
-    const handleOnClickAtelier2 = () => {
-        navigate('/adl-orf/atelier2');
-    }
-
-    const handleScrollTo2F = () => {
-        if (floor2Ref.current) {
-            floor2Ref.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-
+const Home: React.FC<homeProp> = ({ headerHeight, data }) => {
+    const count = (floor: Floor) => data.filter(c => c.floor === floor).length;
     return(
         <Fade in={true} transition={{enter: {duration: 0.3}, exit: {duration: 0.3}}}>
-            <Box sx={contentBox}>
-                <Box sx={{ ...floorBox, position: 'relative'}} ref={floor1Ref}>
-                    <Heading fontSize="xl" fontWeight="600" position="absolute" top="10px" left="15px">1F</Heading>
-                    <Image
-                        src={Floor1}
-                        style={imageStyle}
-                        objectFit={'contain'}
-                    />
-                    <NavigationButton imagePosition={image1Position} imageSize={image1Size} buttonPosition={{width: 210.928, height: 382.825 }} headerHeight={headerHeight} handleOnClick={handleOnClickLounge} logo={ADLLogo}/>
-                    <NavigationButton imagePosition={image1Position} imageSize={image1Size} buttonPosition={{width: 140.5, height: 117.982 }} headerHeight={headerHeight} handleOnClick={handleOnClickAtelier1} logo={ErikaLabLogo} />
-                    <Box position="absolute" bottom="20px" left="50%" transform="translateX(-50%)" zIndex={5}>
-                        <ScrollDownButton onClick={handleScrollTo2F} />
-                    </Box>
-                </Box>
-                <Box sx={{ ...floorBox, position: 'relative'}} ref={floor2Ref}>
-                    <Heading fontSize="xl" fontWeight="600" position="absolute" top="10px" left="15px">2F</Heading>
-                    <Image
-                        src={Floor2}
-                        style={imageStyle}
-                        objectFit={'contain'}
-                    />
-                </Box>
-                <NavigationButton imagePosition={image2Position} imageSize={image2Size} buttonPosition={{width: 124.061, height: 346.4 }} headerHeight={headerHeight} handleOnClick={handleOnClickAtelier2} logo={ADLLogo} />
+            <Box
+                paddingTop={`${headerHeight}px`}
+                paddingBottom="40px"
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+            >
+                <FloorOverview floor="1F" image={Floor1} count={count('1F')} />
+                <FloorOverview floor="2F" image={Floor2} count={count('2F')} />
             </Box>
         </Fade>
-
     )
 }
 

@@ -2,16 +2,22 @@
 
 松川昌平研究室 (ADL) の ORF 展示ガイドサイト。ORF2026 は 2026/11/22(日)–23(月・祝)、会場は森アトリエ。
 
-## 2026年版で差し替えるもの
+## 2026年版の構成
+
+- トップ: 1F / 2F の全体図 → 各階の展示エリア詳細図（`/adl-orf/1f`, `/adl-orf/2f`）
+- 詳細図の番号ボタン（00〜12）を押すと作品カードが開く
+- 平面図は 2026年の配置図（orf2026_haiti.dxf）から書き出した `src/image/1f.png` `2f.png` `1f_detail.png` `2f_detail.png`
+
+## 作品データの入れ方
+
+`src/notion/api.ts` の `EXHIBITS_2026` を埋める（タイトル・名前・学年・説明・画像・リンク）。
+画像は `public/works/` に置いて `modalImage: "/adl-orf/works/xx.jpg"` のように書くのが簡単。
+ボタンの位置 `position` は詳細図の左上からの %（x, y）。
 
 | 何を | どこ |
 | --- | --- |
-| タイトル画像（今年のテーマ） | `src/image/Title.png` |
-| 展示作品の一覧（タイトル・氏名・学年・説明・画像・リンク） | `src/notion/api.ts` の `DUMMY_MODAL_CONTENTS` |
-| フロア図・各部屋の図 | `src/image/1f.png` `2f.png` `lounge.png` `atelier1.png` `atelier2.png` |
+| タイトル画像（テーマは2025年と同じ） | `src/image/Title.png` |
 | ページの説明文 | `public/index.html` の `description` |
-
-作品数を変えるときは `src/global/Routes.tsx` の番号の範囲（1–10 Lounge / 11–14 Atelier2 / 15–19 Atelier1）も合わせる。
 
 ## 公開
 
