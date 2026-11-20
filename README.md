@@ -1,3 +1,27 @@
+# ADL ORF2026 展示サイト
+
+松川昌平研究室 (ADL) の ORF 展示ガイドサイト。ORF2026 は 2026/11/22(日)–23(月・祝)、会場は森アトリエ。
+
+## 2026年版で差し替えるもの
+
+| 何を | どこ |
+| --- | --- |
+| タイトル画像（今年のテーマ） | `src/image/Title.png` |
+| 展示作品の一覧（タイトル・氏名・学年・説明・画像・リンク） | `src/notion/api.ts` の `DUMMY_MODAL_CONTENTS` |
+| フロア図・各部屋の図 | `src/image/1f.png` `2f.png` `lounge.png` `atelier1.png` `atelier2.png` |
+| ページの説明文 | `public/index.html` の `description` |
+
+作品数を変えるときは `src/global/Routes.tsx` の番号の範囲（1–10 Lounge / 11–14 Atelier2 / 15–19 Atelier1）も合わせる。
+
+## 公開
+
+`homepage` は `/adl-orf/` なので、どのサーバーでも `/adl-orf/` 配下に置けば動く。
+
+- 自前サーバー（研究室のマシンなど）: `npm run build:server` → `dist/adl-orf/` をWebサーバーの公開ディレクトリにコピー。SPAなので、存在しないパスは `/adl-orf/index.html` を返す設定にする（nginx なら `try_files $uri /adl-orf/index.html;`）。
+- GitHub Pages: `npm run deploy`（`docs/` に出力して master に push）。
+
+---
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
