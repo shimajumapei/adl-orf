@@ -19,9 +19,15 @@ const PopupButton: React.FC<PopupButtonProps> = ({ id, position, label, caption,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        height: 'auto',
+        justifyContent: 'center',
+        width: '36px',
+        height: '36px',
         minWidth: 0,
+        borderRadius: '50%',
+        backgroundColor: 'white',
+        border: '1.5px solid',
+        borderColor: 'gray.800',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.15)',
         zIndex: 2,
         '&::before': {
             content: '""',
@@ -33,7 +39,7 @@ const PopupButton: React.FC<PopupButtonProps> = ({ id, position, label, caption,
             height: '36px',
             borderRadius: '50%',
             border: '2px solid',
-            borderColor: 'gray.500',
+            borderColor: 'gray.600',
             animation: 'pulse-ring 2s ease-out infinite',
             pointerEvents: 'none'
         },
@@ -45,7 +51,7 @@ const PopupButton: React.FC<PopupButtonProps> = ({ id, position, label, caption,
 
     return (
         <Button onClick={() => setCurrentModal(id)} sx={buttonStyle} variant='unstyled' aria-label={`${label} ${caption ?? ''}`}>
-            <Text fontWeight={700} fontSize="sm" lineHeight="36px">{label}</Text>
+            <Text fontWeight={700} fontSize="13px" lineHeight="1" color="gray.900">{label}</Text>
             {caption && <Text fontSize="10px" lineHeight="1" whiteSpace="nowrap" backgroundColor="whiteAlpha.800">{caption}</Text>}
         </Button>
     );

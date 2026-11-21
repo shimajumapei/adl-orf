@@ -1,6 +1,7 @@
-import { Box, Divider, Image } from '@chakra-ui/react';
+import { Box, Image } from '@chakra-ui/react';
 import Title from 'image/Title.png';
 import { SetStateAction, useEffect, useRef } from 'react';
+import { GUTTER } from '../layout';
 
 interface HeaderProps {
   setHeaderHeight: React.Dispatch<SetStateAction<number>>;
@@ -10,42 +11,35 @@ const Header: React.FC<HeaderProps> = ({ setHeaderHeight }) => {
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateHeaderHeight = () => {
-      if (headerRef.current) {
-        setHeaderHeight(headerRef.current.offsetHeight);
-      }
+    const update = () => {
+      if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
     };
-
-    // Update the header height initially and on window resize
-    updateHeaderHeight();
-    window.addEventListener('resize', updateHeaderHeight);
-
-    return () => {
-      window.removeEventListener('resize', updateHeaderHeight);
-    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, [setHeaderHeight]);
 
   const handleOnLoad = () => {
-    if (headerRef.current) {
-      setHeaderHeight(headerRef.current.offsetHeight);
-    }
+    if (headerRef.current) setHeaderHeight(headerRef.current.offsetHeight);
   };
 
   return (
-    <Box sx={{
-      position: 'fixed',
-      padding: 2,
-      top: 0,
-      left: 0,
-      backgroundColor: 'white',
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      zIndex: 1000,
-    }} ref={headerRef}>
-      <Image src={Title} marginBottom={3} maxH={20} onLoad={handleOnLoad} />
-      <Divider />
+    <Box
+      ref={headerRef}
+      position="fixed"
+      top={0}
+      left={0}
+      width="100%"
+      zIndex={1000}
+      backgroundColor="white"
+      borderBottom="1px solid"
+      borderColor="gray.200"
+      paddingX={`${GUTTER}px`}
+      paddingY="12px"
+      display="flex"
+      justifyContent="center"
+    >
+      <Image src={Title} width="100%" maxWidth="420px" onLoad={handleOnLoad} alt="CULTIVATING ARCHITECTURES" />
     </Box>
   );
 };

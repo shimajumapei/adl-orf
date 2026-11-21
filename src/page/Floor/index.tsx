@@ -1,5 +1,6 @@
 import React from "react";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Image, Text } from "@chakra-ui/react";
+import { GUTTER, SUBBAR_HEIGHT, TABS_SPACE } from "../../global/layout";
 import { useLocation } from "react-router-dom";
 import PopupButton from "../../global/components/PopupButton";
 import PopupDrawer from "../../global/components/PopupDrawer";
@@ -45,22 +46,26 @@ const FloorPage: React.FC<Props> = ({
         <Box
           sx={{
             width: "100vw",
-            height: "100vh",
-            paddingTop: `${headerHeight + 60}px`,
-            paddingBottom: "80px",
+            height: "100dvh",
+            paddingTop: `${headerHeight + SUBBAR_HEIGHT}px`,
+            paddingBottom: `${TABS_SPACE}px`,
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
             alignItems: "center",
             overflow: "hidden",
           }}
         >
           <Overlay isOpen={currentModal > 0} />
-          {/* 図面の比率を保ったまま画面いっぱいに置く。ボタンは図面に対する % */}
+          <Text fontSize="12px" color="gray.500" paddingY="12px" flexShrink={0}>
+            {contents.length > 0 ? "番号をタップすると作品が見られます" : "展示作品は準備中です"}
+          </Text>
+          {/* 図面の比率を保ったまま、残りの高さいっぱいに置く。ボタンは図面に対する % */}
+          <Box flex="1" minHeight={0} width="100%" paddingX={`${GUTTER}px`} display="flex" justifyContent="center" alignItems="flex-start">
           <Box
             position="relative"
             sx={{
               aspectRatio: `${ratio}`,
-              height: `min(100%, calc(100vw / ${ratio}))`,
+              height: `min(100%, calc((100vw - ${GUTTER * 2}px) / ${ratio}))`,
             }}
           >
             <Image src={image} width="100%" height="100%" objectFit="contain" opacity={0.8} alt={`${floor} 平面図`} />
@@ -73,6 +78,7 @@ const FloorPage: React.FC<Props> = ({
                 setCurrentModal={setCurrentModal}
               />
             ))}
+          </Box>
           </Box>
         </Box>
       </OpenFade>

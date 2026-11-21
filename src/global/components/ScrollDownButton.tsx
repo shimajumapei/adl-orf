@@ -28,7 +28,7 @@ const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({ onClick }) => {
             sx={buttonStyle}
             onClick={onClick}
             animate={{
-                y: [0, 10, 0],
+                y: [0, 6, 0],
             }}
             transition={{
                 duration: 2,
@@ -36,10 +36,10 @@ const ScrollDownButton: React.FC<ScrollDownButtonProps> = ({ onClick }) => {
                 ease: "easeInOut"
             }}
         >
-            <Text fontSize="18px" fontWeight="bold" color="gray.700" mb={1}>
+            <Text fontSize="12px" fontWeight="600" color="gray.600" letterSpacing="0.08em">
                 2F
             </Text>
-            <ChevronDownIcon boxSize={10} color="gray.700" />
+            <ChevronDownIcon boxSize={6} color="gray.600" />
         </MotionBox>
     );
 };
