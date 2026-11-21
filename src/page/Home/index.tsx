@@ -23,12 +23,37 @@ interface Spot {
     y: number; // 全体図に対する %（上から）
     logo: string;
     label: string;
-    to: string;
+    to?: string; // 無ければ押せない（ロゴを置くだけ）
     wide?: boolean;
 }
 
 const SpotButton: React.FC<Spot> = ({ x, y, logo, label, to, wide }) => {
     const navigate = useNavigate();
+    if (!to) {
+        // 情報の無い展示: 押せない・動かない
+        return (
+            <Box
+                role="img"
+                aria-label={label}
+                position="absolute"
+                left={`${x}%`}
+                top={`${y}%`}
+                transform="translate(-50%, -50%)"
+                width="56px"
+                height="56px"
+                borderRadius="50%"
+                backgroundColor="white"
+                border="1px solid"
+                borderColor="gray.200"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                pointerEvents="none"
+            >
+                <Image src={logo} alt="" width={wide ? '44px' : '40px'} height="auto" filter="invert(1)" opacity={0.6} />
+            </Box>
+        );
+    }
     return (
         <Box
             as="button"
@@ -114,12 +139,12 @@ const Home: React.FC<homeProp> = ({ headerHeight }) => {
             <Box paddingTop={`${headerHeight}px`}>
                 <FloorSection
                     floor="1F"
-                    caption="ロゴをタップすると各展示へ"
+                    caption="ロゴをタップすると展示へ"
                     plan={Floor1}
                     height={sectionHeight}
                     spots={[
                         { x: 58.9, y: 72.7, logo: ADLLogo, label: '1F ADL 展示エリア', to: floorPath('1F') },
-                        { x: 40.1, y: 21.5, logo: ErikaLabLogo, label: 'Atelier 1 エリカラボ', to: floorPath('A1'), wide: true },
+                        { x: 40.1, y: 21.5, logo: ErikaLabLogo, label: 'Atelier 1 エリカラボ', wide: true },
                     ]}
                 >
                     <ScrollDownButton onClick={() => floor2Ref.current?.scrollIntoView({ behavior: 'smooth' })} />

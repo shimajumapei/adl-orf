@@ -3,7 +3,7 @@ import {
     Drawer,
     DrawerOverlay,
     DrawerContent,
-    DrawerCloseButton,
+    Button,
     DrawerBody,
     IconButton,
     Box,
@@ -81,8 +81,22 @@ const PopupDrawer: React.FC<PopupDrawerProps> = ({
     return (
         <Drawer isOpen={isOpen} onClose={handleOnClose} placement="bottom" size="full">
             <DrawerOverlay />
-            <DrawerContent height="100vh" padding='40px' position="relative">
-                <DrawerCloseButton />
+            <DrawerContent height="100vh" padding='40px' paddingTop='64px' position="relative">
+                {/* 戻るボタン（左上）。押すと作品カードを閉じて平面図に戻る */}
+                <Box position="absolute" top="0" left="0" right="0" height="56px" display="flex" alignItems="center" paddingX="8px" borderBottom="1px solid" borderColor="gray.100" backgroundColor="white" zIndex={2}>
+                    <Button
+                        onClick={handleOnClose}
+                        variant="ghost"
+                        height="40px"
+                        paddingX="8px"
+                        leftIcon={<NavigationLeft />}
+                        fontSize="15px"
+                        fontWeight="600"
+                        color="gray.700"
+                    >
+                        {currentContent.floor === 'A1' ? 'Atelier 1' : currentContent.floor}の平面図に戻る
+                    </Button>
+                </Box>
                 <DrawerBody overflowY='auto' maxWidth="600px" margin="0 auto" width="100%">
                     {currentContent.modalImage && (
                         <>
