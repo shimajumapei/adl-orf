@@ -96,7 +96,7 @@ const PopupDrawer: React.FC<PopupDrawerProps> = ({
                         </>
                     )}
                     <Box>
-                        <Heading style={titleStyle} fontWeight={600}>{currentContent.modalTitle}</Heading>
+                        <Heading style={titleStyle} fontWeight={600} whiteSpace="pre-line" lineHeight="1.35">{currentContent.modalTitle}</Heading>
                         <Text style={nameStyle} fontWeight={600}>{`${currentContent.booth}  ${currentContent.name} ${currentContent.grade}`.trim()}</Text>
                         <Text style={textStyle}
                           sx={{ whiteSpace: 'pre-wrap' }}
