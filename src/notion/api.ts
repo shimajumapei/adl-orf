@@ -22,6 +22,7 @@ export const EXHIBITS_2026: PopupContent[] = [
   { id: 11, booth: "10", floor: "1F", name: "陳", grade: "", modalTitle: TBD, modalContent: "", modalImage: "", position: { x: 44.8, y: 38.5 } },
   { id: 12, booth: "11", floor: "1F", name: "森本", grade: "", modalTitle: TBD, modalContent: "", modalImage: "", position: { x: 44.8, y: 54.4 } },
   { id: 13, booth: "12", floor: "1F", name: "桑原", grade: "", modalTitle: TBD, modalContent: "", modalImage: "", position: { x: 8.5, y: 82.0 } },
+  // Atelier 1（エリカラボ）: floor: "A1"。位置は src/image/atelier1_detail.png に対する %
 ];
 
 export const fetchModalContents = async (): Promise<PopupContent[]> =>

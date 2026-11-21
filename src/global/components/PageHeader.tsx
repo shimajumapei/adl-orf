@@ -3,6 +3,7 @@ import { Box, IconButton, Heading, Image } from "@chakra-ui/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { NavigationLeft } from "./NavigationLeft";
 import ADLLogo from 'image/ADLLogo.png';
+import ErikaLabLogo from 'image/ErikaLabLogo.png';
 
 interface PageHeaderProps {
   headerHeight: number;
@@ -21,6 +22,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({ headerHeight }) => {
     if (pathname === '/adl-orf/1f') {
       setLogo(ADLLogo);
       setPageTitle("1F");
+    } else if (pathname === '/adl-orf/atelier1') {
+      setLogo(ErikaLabLogo);
+      setPageTitle("Atelier 1");
     } else if (pathname === '/adl-orf/2f') {
       setLogo(ADLLogo);
       setPageTitle("2F");

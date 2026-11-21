@@ -9,7 +9,7 @@ interface appRoutesProps {
     data: PopupContent[];
 }
 
-export const floorPath = (floor: string) => `/adl-orf/${floor.toLowerCase()}`;
+export const floorPath = (floor: string) => floor === 'A1' ? '/adl-orf/atelier1' : `/adl-orf/${floor.toLowerCase()}`;
 
 const AppRoutes: React.FC<appRoutesProps> = ({headerHeight, data}) => {
     const [currentModal, setCurrentModal] = useState<number>(0);
@@ -42,6 +42,7 @@ const AppRoutes: React.FC<appRoutesProps> = ({headerHeight, data}) => {
             <Route path='/adl-orf' element={<Home headerHeight={headerHeight} />} />
             <Route path='/adl-orf/1f' element={<FloorPage floor="1F" {...floorProps} />} />
             <Route path='/adl-orf/2f' element={<FloorPage floor="2F" {...floorProps} />} />
+            <Route path='/adl-orf/atelier1' element={<FloorPage floor="A1" {...floorProps} />} />
         </Routes>
     )
 }

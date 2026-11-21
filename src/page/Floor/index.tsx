@@ -9,6 +9,7 @@ import PageTabs from "../../global/components/PageTabs";
 import { Floor, PopupContent } from "../../notion/types";
 import Floor1Detail from "image/1f_detail.png";
 import Floor2Detail from "image/2f_detail.png";
+import Atelier1Detail from "image/atelier1_detail.png";
 
 interface Props {
   floor: Floor;
@@ -31,9 +32,12 @@ const FloorPage: React.FC<Props> = ({
 }) => {
   const { state } = useLocation();
   const contents = data.filter((c) => c.floor === floor);
-  const image = floor === "1F" ? Floor1Detail : Floor2Detail;
-  // 詳細図の縦横比（幅 / 高さ）
-  const ratio = floor === "1F" ? 1730 / 2400 : 1320 / 2400;
+  // 詳細図と、その縦横比（幅 / 高さ）
+  const { image, ratio } = {
+    "1F": { image: Floor1Detail, ratio: 1730 / 2400 },
+    "2F": { image: Floor2Detail, ratio: 1320 / 2400 },
+    A1: { image: Atelier1Detail, ratio: 1938 / 2400 },
+  }[floor];
 
   return (
     <>

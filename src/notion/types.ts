@@ -1,4 +1,5 @@
-export type Floor = '1F' | '2F';
+/** 1F / 2F = ADL の展示エリア, A1 = Atelier 1（エリカラボ） */
+export type Floor = '1F' | '2F' | 'A1';
 
 export type Grade = 'B1' | 'B2' | 'B3' | 'B4' | 'M1' | 'M2' | 'D' | '';
 

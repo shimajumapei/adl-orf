@@ -7,6 +7,7 @@ import ScrollDownButton from '../../global/components/ScrollDownButton';
 import { useNavigate } from 'react-router-dom';
 import { floorPath } from '../../global/Routes';
 import ADLLogo from 'image/ADLLogo.png'
+import ErikaLabLogo from 'image/ErikaLabLogo.png'
 
 
 interface homeProp {
@@ -81,6 +82,7 @@ const Home: React.FC<homeProp> = ({headerHeight}) => {
 
     const handleOnClick1F = () => navigate(floorPath('1F'));
     const handleOnClick2F = () => navigate(floorPath('2F'));
+    const handleOnClickAtelier1 = () => navigate(floorPath('A1'));
 
     const handleScrollTo2F = () => {
         if (floor2Ref.current) {
@@ -100,6 +102,7 @@ const Home: React.FC<homeProp> = ({headerHeight}) => {
                     />
                     {/* 展示エリアの位置（平面図 350x550 換算） */}
                     <NavigationButton imagePosition={image1Position} imageSize={image1Size} buttonPosition={{width: 206.2, height: 399.9 }} headerHeight={headerHeight} handleOnClick={handleOnClick1F} logo={ADLLogo}/>
+                    <NavigationButton imagePosition={image1Position} imageSize={image1Size} buttonPosition={{width: 140.5, height: 117.982 }} headerHeight={headerHeight} handleOnClick={handleOnClickAtelier1} logo={ErikaLabLogo} />
                     <Box position="absolute" bottom="20px" left="50%" transform="translateX(-50%)" zIndex={5}>
                         <ScrollDownButton onClick={handleScrollTo2F} />
                     </Box>
