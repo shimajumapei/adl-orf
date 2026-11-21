@@ -39,7 +39,7 @@ const AppRoutes: React.FC<appRoutesProps> = ({headerHeight, data}) => {
 
     return(
         <Routes>
-            <Route path='/adl-orf' element={<Home headerHeight={headerHeight} data={data} />} />
+            <Route path='/adl-orf' element={<Home headerHeight={headerHeight} />} />
             <Route path='/adl-orf/1f' element={<FloorPage floor="1F" {...floorProps} />} />
             <Route path='/adl-orf/2f' element={<FloorPage floor="2F" {...floorProps} />} />
         </Routes>

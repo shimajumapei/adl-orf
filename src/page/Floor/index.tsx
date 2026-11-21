@@ -32,6 +32,8 @@ const FloorPage: React.FC<Props> = ({
   const { state } = useLocation();
   const contents = data.filter((c) => c.floor === floor);
   const image = floor === "1F" ? Floor1Detail : Floor2Detail;
+  // 詳細図の縦横比（幅 / 高さ）
+  const ratio = floor === "1F" ? 1632 / 2400 : 1120 / 2400;
 
   return (
     <>
@@ -39,24 +41,31 @@ const FloorPage: React.FC<Props> = ({
         <Box
           sx={{
             width: "100vw",
-            minHeight: "100vh",
+            height: "100vh",
             paddingTop: `${headerHeight + 60}px`,
-            paddingBottom: "90px",
+            paddingBottom: "80px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            overflow: "hidden",
           }}
         >
           <Overlay isOpen={currentModal > 0} />
-          <Box position="relative" width="100%" maxWidth="1000px">
-            <Image src={image} width="100%" opacity={0.7} alt={`${floor} 平面図`} />
+          {/* 図面の比率を保ったまま画面いっぱいに置く。ボタンは図面に対する % */}
+          <Box
+            position="relative"
+            sx={{
+              aspectRatio: `${ratio}`,
+              height: `min(100%, calc(100vw / ${ratio}))`,
+            }}
+          >
+            <Image src={image} width="100%" height="100%" objectFit="contain" opacity={0.8} alt={`${floor} 平面図`} />
             {contents.map((c) => (
               <PopupButton
                 key={c.id}
                 id={c.id}
                 position={c.position}
                 label={c.booth}
-                caption={c.name}
                 setCurrentModal={setCurrentModal}
               />
             ))}

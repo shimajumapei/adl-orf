@@ -26,7 +26,7 @@ const PopupButton: React.FC<PopupButtonProps> = ({ id, position, label, caption,
         '&::before': {
             content: '""',
             position: 'absolute',
-            top: caption ? 'calc(50% - 8px)' : '50%',
+            top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '36px',
