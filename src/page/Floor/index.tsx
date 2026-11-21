@@ -33,7 +33,7 @@ const FloorPage: React.FC<Props> = ({
   const contents = data.filter((c) => c.floor === floor);
   const image = floor === "1F" ? Floor1Detail : Floor2Detail;
   // 詳細図の縦横比（幅 / 高さ）
-  const ratio = floor === "1F" ? 1632 / 2400 : 1120 / 2400;
+  const ratio = floor === "1F" ? 1730 / 2400 : 1320 / 2400;
 
   return (
     <>

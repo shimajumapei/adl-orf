@@ -13,7 +13,7 @@ const PageTabs: React.FC = () => {
 
   // Determine active tab index based on current path
   const getActiveIndex = () => {
-    const currentPath = location.pathname;
+    const currentPath = location.pathname.replace(/\/+$/, '');
     const index = tabs.findIndex((tab) => tab.path === currentPath);
     return index !== -1 ? index : 0;
   };

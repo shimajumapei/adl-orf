@@ -11,29 +11,31 @@ interface PageHeaderProps {
 const PageHeader: React.FC<PageHeaderProps> = ({ headerHeight }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  // サーバーによっては /adl-orf/1f/ のように末尾に / が付く
+  const pathname = location.pathname.replace(/\/+$/, '');
   const [logo, setLogo] = useState<string>(ADLLogo);
   const [pageTitle, setPageTitle] = useState<string>("");
 
   useEffect(() => {
     // Set logo and title based on route
-    if (location.pathname === '/adl-orf/1f') {
+    if (pathname === '/adl-orf/1f') {
       setLogo(ADLLogo);
       setPageTitle("1F");
-    } else if (location.pathname === '/adl-orf/2f') {
+    } else if (pathname === '/adl-orf/2f') {
       setLogo(ADLLogo);
       setPageTitle("2F");
     } else {
       setLogo(ADLLogo);
       setPageTitle("");
     }
-  }, [location.pathname]);
+  }, [pathname]);
 
   const handleBackClick = () => {
     navigate('/adl-orf');
   };
 
   // Don't render on home page
-  if (location.pathname === '/adl-orf' || location.pathname === '/adl-orf/') {
+  if (pathname === '/adl-orf') {
     return null;
   }
 
