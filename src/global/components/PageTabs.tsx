@@ -7,14 +7,14 @@ const PageTabs: React.FC = () => {
   const location = useLocation();
 
   const tabs = [
-    { label: "Lounge", path: "/adl-orf/lounge" },
+    { label: "1F", path: "/adl-orf/1f" },
+    { label: "2F", path: "/adl-orf/2f" },
     { label: "Atelier 1", path: "/adl-orf/atelier1" },
-    { label: "Atelier 2", path: "/adl-orf/atelier2" },
   ];
 
   // Determine active tab index based on current path
   const getActiveIndex = () => {
-    const currentPath = location.pathname;
+    const currentPath = location.pathname.replace(/\/+$/, '');
     const index = tabs.findIndex((tab) => tab.path === currentPath);
     return index !== -1 ? index : 0;
   };
@@ -25,13 +25,16 @@ const PageTabs: React.FC = () => {
 
   const tabsContainerStyle = {
     position: "fixed",
-    bottom: "20px",
+    bottom: "max(16px, env(safe-area-inset-bottom))",
     left: "50%",
     transform: "translateX(-50%)",
     zIndex: 100,
-    backgroundColor: "gray.200",
-    borderRadius: "4px",
-    padding: "4px",
+    backgroundColor: "gray.100",
+    border: "1px solid",
+    borderColor: "gray.200",
+    borderRadius: "10px",
+    padding: "3px",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
   };
 
   return (
@@ -45,16 +48,18 @@ const PageTabs: React.FC = () => {
         {tabs.map((tab, index) => (
           <Tab
             key={tab.path}
-            fontSize="14px"
+            fontSize="13px"
+            height="34px"
             fontWeight="semibold"
-            borderRadius="4px"
+            borderRadius="7px"
             whiteSpace="nowrap"
             color="gray.600"
-            paddingX="20px"
+            paddingX="16px"
             _selected={{
               color: "gray.800",
               backgroundColor: "white",
               borderColor: "transparent",
+              boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
             }}
             margin="0"
           >
