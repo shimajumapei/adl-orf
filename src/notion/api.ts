@@ -27,6 +27,7 @@ export const EXHIBITS_2026: PopupContent[] = [
     modalTitle: "ANIMAL MOUNTAIN HOUSE",
     modalContent: "犬や猫と暮らす人が多い一方で平坦な道が続く地に、動物好きの夫婦が営む民宿を兼ねた住宅を計画する。人と動物、住人と旅人、地域の人が出会う山のような住まい。",
     modalImage: W("02.jpg"),
+    contentUrl: "https://app.notion.com/p/algorithmic-design-lab/ANIMAL-MOUNTAIN-HOUSE-3b09770b7e3b80c7a1f1e49c8f8d3e01",
     position: { x: 59.5, y: 57.0 },
   },
   {
@@ -34,6 +35,7 @@ export const EXHIBITS_2026: PopupContent[] = [
     modalTitle: "持ち寄る路地",
     modalContent: "密集住宅街における建物と路地の関係性を操作し、内外・公私・住商が混ざり合う新たな住宅プロトタイプの展開可能性を示す。",
     modalImage: W("03.jpg"),
+    contentUrl: "https://app.notion.com/p/algorithmic-design-lab/3ae9770b7e3b808189a7ccd6fcaa7b9f",
     position: { x: 59.5, y: 46.4 },
   },
   {
