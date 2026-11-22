@@ -71,7 +71,7 @@ export const EXHIBITS_2026: PopupContent[] = [
     id: 9, booth: "08", floor: "2F", name: "志磨純平", grade: "M2",
     modalTitle: "編集としての設計",
     modalContent: "本研究は、編集と建築を架橋する方法を探求する。ある地域で記録・写真・解体材といった一次情報を集め、すべてを同じ面に並べる。そこに見方を置くと、物が選ばれ、つながり、小さな体系ができる。見方を替えれば、同じ材料から別の体系が生まれる。その体系から、雑誌の記事と什器という二つのかたちを、同じ手順でつくる。",
-    modalImage: "",
+    modalImage: W("08.jpg"),
     position: { x: 50.7, y: 81.0 },
   },
   // 1F
