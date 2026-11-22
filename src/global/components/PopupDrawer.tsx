@@ -3,19 +3,16 @@ import {
     Drawer,
     DrawerOverlay,
     DrawerContent,
-    DrawerCloseButton,
-    DrawerBody,
-    IconButton,
+    Button,
     Box,
     Image,
     Heading,
     Text,
-    Divider,
-    Link
+    Link,
 } from '@chakra-ui/react';
-import { NavigationRight } from './NavigationRight';
 import { NavigationLeft } from './NavigationLeft';
 import { PopupContent } from '../../notion/types';
+import { GUTTER } from '../layout';
 
 interface PopupDrawerProps {
     currentModal: number;
@@ -25,131 +22,88 @@ interface PopupDrawerProps {
     onPrevModal: () => void;
 }
 
+const BAR_HEIGHT = 56;
+const FOOT_HEIGHT = 56;
+
+// 見出しの列（左に小さな見出し、右に中身）
+const Row: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
+    <Box display="grid" gridTemplateColumns="48px 1fr" columnGap="12px" borderTop="1px solid" borderColor="gray.100" paddingTop="12px">
+        <Text fontSize="10px" color="gray.500" letterSpacing="0.15em" paddingTop="4px">{label}</Text>
+        <Box minWidth={0}>{children}</Box>
+    </Box>
+);
+
 const PopupDrawer: React.FC<PopupDrawerProps> = ({
     currentModal,
     setCurrentModal,
     popupContents,
     onNextModal,
-    onPrevModal
+    onPrevModal,
 }) => {
     const isOpen = currentModal > 0;
-    const currentContent = popupContents.find(content => content.id === currentModal);
+    const c = popupContents.find(content => content.id === currentModal);
+    const handleOnClose = () => setCurrentModal(0);
 
-    const handleOnClose = () => {
-        setCurrentModal(0);
-    }
-
-    const imageBox = {
-        width: '100%',
-        height: '25vh',
-        minHeight: 200,
-        maxHeight: 233,
-        marginBottom: 10
-    }
-
-    const titleStyle = {
-        fontSize: 28,
-        marginTop: 10,
-        marginBottom: 5
-    }
-
-    const nameStyle = {
-        fontSize: 16,
-        marginTop: 5,
-        marginBottom: 10,
-        letterSpacing: 0.8
-    }
-
-    const textStyle = {
-        fontSize: 12,
-        fontWeight: 500,
-        letterSpacing: 0.8
-    } as const
-
-    const linkTitleStyle = {
-        fontSize: 12,
-        fontWeight: 600,
-        letterSpacing: 0.8,
-        marginTop: 16,
-        marginBottom: 4
-    }
-
-    if (!currentContent) {
-        return null;
-    }
+    if (!c) return null;
+    const floorLabel = c.floor === 'A1' ? 'Atelier 1' : c.floor;
 
     return (
         <Drawer isOpen={isOpen} onClose={handleOnClose} placement="bottom" size="full">
             <DrawerOverlay />
-            <DrawerContent height="100vh" padding='40px' position="relative">
-                <DrawerCloseButton />
-                <DrawerBody overflowY='auto' maxWidth="600px" margin="0 auto" width="100%">
-                    <Box style={imageBox}>
-                        <Image
-                            style={{width: '100%', height: '100%', borderRadius: '5px', objectFit: 'contain'}}
-                            src={currentContent.modalImage}
-                        />
-                    </Box>
-                    <Divider marginTop={3} marginBottom={3}/>
-                    <Box>
-                        <Heading style={titleStyle} fontWeight={600}>{currentContent.modalTitle}</Heading>
-                        <Text style={nameStyle} fontWeight={600}>{`${currentContent.name} ${currentContent.grade}`}</Text>
-                        <Text style={textStyle}
-                          sx={{ whiteSpace: 'pre-wrap' }}
-                        >
-                            {currentContent.modalContent}
-                        </Text>
-                        {currentContent.contentUrl && (
-                            <>
-                                <Text style={linkTitleStyle}>U:����:</Text>
-                                <Link
-                                    href={currentContent.contentUrl}
-                                    isExternal
-                                    color="blue.500"
-                                    fontSize="12px"
-                                    textDecoration="underline"
-                                    sx={{ wordBreak: 'break-all' }}
-                                >
-                                    {currentContent.contentUrl}
-                                </Link>
-                            </>
+            <DrawerContent height="100dvh" position="relative" padding={0}>
+                {/* 戻る */}
+                <Box position="absolute" top={0} left={0} right={0} height={`${BAR_HEIGHT}px`} display="flex" alignItems="center" paddingX="8px" borderBottom="1px solid" borderColor="gray.100" backgroundColor="white" zIndex={2}>
+                    <Button onClick={handleOnClose} variant="ghost" height="40px" paddingX="8px" leftIcon={<NavigationLeft />} fontSize="15px" fontWeight="600" color="gray.700">
+                        {floorLabel}の平面図に戻る
+                    </Button>
+                </Box>
+
+                {/* 本文（スクロール） */}
+                <Box position="absolute" top={`${BAR_HEIGHT}px`} bottom={`${FOOT_HEIGHT}px`} left={0} right={0} overflowY="auto">
+                    <Box maxWidth="640px" marginX="auto" paddingBottom="32px">
+                        {/* 06: 画像を端から端まで大きく */}
+                        {c.modalImage && (
+                            <Box backgroundColor="#f4f4f1" borderBottom="1px solid" borderColor="gray.100" height="min(52vh, 480px)" display="flex" alignItems="center" justifyContent="center">
+                                <Image src={c.modalImage} alt={c.modalTitle} maxWidth="100%" maxHeight="100%" objectFit="contain" />
+                            </Box>
                         )}
+
+                        {/* 07: 見出しの列 */}
+                        <Box paddingX={`${GUTTER + 8}px`} paddingTop="24px" display="grid" rowGap="14px">
+                            <Row label="作品">
+                                <Heading as="h2" fontSize="20px" fontWeight="700" lineHeight="1.4" whiteSpace="pre-line" sx={{ textWrap: 'balance' }}>
+                                    {c.modalTitle}
+                                </Heading>
+                            </Row>
+                            <Row label="氏名">
+                                <Text fontSize="14px" fontWeight="600" letterSpacing="0.04em">
+                                    {c.name}{c.grade && <Text as="span" fontWeight="400" color="gray.600">　{c.grade}</Text>}
+                                </Text>
+                            </Row>
+                            <Row label="番号">
+                                <Text fontSize="14px">{c.booth}　<Text as="span" color="gray.600">{floorLabel}</Text></Text>
+                            </Row>
+                            {c.modalContent && (
+                                <Row label="概要">
+                                    <Text fontSize="13px" lineHeight="1.9" color="gray.700" letterSpacing="0.02em" whiteSpace="pre-wrap">{c.modalContent}</Text>
+                                </Row>
+                            )}
+                            {c.contentUrl && (
+                                <Row label="リンク">
+                                    <Link href={c.contentUrl} isExternal fontSize="12px" color="gray.800" textDecoration="underline" sx={{ wordBreak: 'break-all' }}>
+                                        {c.contentUrl}
+                                    </Link>
+                                </Row>
+                            )}
+                        </Box>
                     </Box>
-                </DrawerBody>
-                <IconButton
-                    onClick={onPrevModal}
-                    variant="unstyled"
-                    aria-label='Previous'
-                    icon={<NavigationLeft />}
-                    style={{
-                        display:'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'absolute',
-                        left: "5px",
-                        top: '50%',
-                        transform: 'translateY(-50%)'
-                    }}
-                >
-                    Prev Modal
-                </IconButton>
-                <IconButton
-                    onClick={onNextModal}
-                    variant="unstyled"
-                    aria-label='Next'
-                    icon={<NavigationRight />}
-                    style={{
-                        display:'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        position: 'absolute',
-                        right: "5px",
-                        top: '50%',
-                        transform: 'translateY(-50%)'
-                    }}
-                >
-                    Next Modal
-                </IconButton>
+                </Box>
+
+                {/* 前後の作品 */}
+                <Box position="absolute" bottom={0} left={0} right={0} height={`${FOOT_HEIGHT}px`} display="flex" justifyContent="space-between" alignItems="center" paddingX="8px" borderTop="1px solid" borderColor="gray.100" backgroundColor="white" sx={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+                    <Button onClick={onPrevModal} variant="ghost" height="40px" fontSize="13px" fontWeight="600" color="gray.700">‹ 前の作品</Button>
+                    <Button onClick={onNextModal} variant="ghost" height="40px" fontSize="13px" fontWeight="600" color="gray.700">次の作品 ›</Button>
+                </Box>
             </DrawerContent>
         </Drawer>
     );

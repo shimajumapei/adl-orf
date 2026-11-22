@@ -2,7 +2,7 @@
   "name": "adl-orf",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yukina765578.github.io/adl-orf/",
+  "homepage": "/adl-orf/",
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
@@ -34,12 +34,14 @@
     "start": "react-scripts start",
     "build:functions": "node_modules/.bin/tsc --project tsconfig.functions.json",
     "build": "react-scripts build",
+    "postbuild": "node -e \"for (const d of ['1f','2f','atelier1']) { require('fs').mkdirSync('build/'+d,{recursive:true}); require('fs').copyFileSync('build/index.html','build/'+d+'/index.html') }\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "rm": "rm -rf docs",
     "mv": "mv build docs",
     "git": "git add . && git commit && git push origin master",
-    "deploy": "npm run rm && npm run build && npm run mv && npm run git"
+    "deploy": "npm run rm && npm run build && npm run mv && npm run git",
+    "build:server": "npm run build && node -e \"require('fs').cpSync('build','dist/adl-orf',{recursive:true})\""
   },
   "eslintConfig": {
     "extends": [
